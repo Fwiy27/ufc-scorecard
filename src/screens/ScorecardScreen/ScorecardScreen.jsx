@@ -1,7 +1,7 @@
 import Scorecard from "../../components/Scorecard/Scorecard";
 import Sidebar from "../../components/Scorecard/Sidebar";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { insertMatch, updateMatch } from "../../lib/matchLogic";
 
@@ -64,6 +64,7 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
           setDeductions={setDeductions}
         />
         <Sidebar
+          matchId={matchId}
           numRounds={numRounds}
           setScores={setScores}
           setDeductions={setDeductions}

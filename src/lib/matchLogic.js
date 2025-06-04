@@ -89,7 +89,7 @@ async function updateMatch(matchId, roundScores) {
   try {
     for (let i = 0; i < roundScores.length; i++) {
       const round = roundScores[i];
-      const { error } = await supabase
+      const { roundError } = await supabase
         .from("round_scores")
         .update({
           fighter_one_score: round[0],
@@ -100,8 +100,13 @@ async function updateMatch(matchId, roundScores) {
         })
         .eq("match_id", matchId)
         .eq("round_number", i + 1);
+      if (roundError) throw error;
 
-      if (error) throw error;
+      const { matchError } = await supabase
+        .from("matches")
+        .update({ updated_at: new Date().toISOString() })
+        .eq("id", matchId);
+      if (matchError) throw error;
     }
     console.log("Match updated successfully");
   } catch (error) {
