@@ -9,7 +9,7 @@ import "./ScorecardScreen.css";
 
 const ScorecardScreen = ({ matchId, setMatchId }) => {
   const numRounds = 3;
-  const fighterOne = ["LANDON", "MIGAWA"];
+  const fighterOne = ["JACK", "DELLA MADALLENA"];
   const fighterTwo = ["JON", "JONES"];
 
   const [scores, setScores] = useState(

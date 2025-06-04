@@ -89,7 +89,14 @@
 
 /* Scores Container */
 
-.rnd-btn {
+.rnd-btn,
+.rnd-mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: black;
+  margin: 0;
   background: white;
   border: none;
   font-weight: bold;
@@ -144,4 +151,15 @@
 .rnd-info.total-info {
   font-weight: bold;
   font-size: 1.5em;
+}
+
+@media (max-width: 768px) {
+  .scorecard {
+    width: 75vw;
+    min-width: 375px;
+  }
+
+  .rnd-info {
+    font-size: 0.8em;
+  }
 }

@@ -73,7 +73,7 @@ const Scorecard = ({
             >
               {deductions[roundIndex][0] == 0 ? "" : deductions[roundIndex][0]}
             </button>
-            <button className="rnd-mid">{roundIndex + 1}</button>
+            <p className="rnd-mid">{roundIndex + 1}</p>
             <button
               className="rnd-btn pnt-deduc"
               onClick={() => handleDeductionClick(roundIndex, 1)}

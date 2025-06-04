@@ -31,6 +31,7 @@
 
 .login-container .email-input,
 .login-container .password-input {
+  font-size: 16px;
   border: solid 1px grey;
   padding: 10px;
   margin: 5px 0px;
