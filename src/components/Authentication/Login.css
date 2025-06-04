@@ -15,12 +15,18 @@
   padding: 20px;
   background: rgb(236, 236, 236);
   border-radius: 8px;
+  border: solid 1px grey;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-container .switch-to-sign-up {
+.login-container .switch {
   border: solid 1px grey;
   padding: 5px;
   margin: 5px 0px;
+}
+
+.login-container h1 {
+  margin: 10px 0;
 }
 
 .login-container .email-input,
@@ -36,7 +42,7 @@
   border: solid 1px blue;
 }
 
-.login-container .sign-in-btn {
+.login-container .submit-btn {
   padding: 10px;
   border: solid 1px grey;
   background: rgb(188, 237, 255);
@@ -44,14 +50,16 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   margin: 5px 0px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
-.login-container .sign-in-btn:hover {
+.login-container .submit-btn:hover {
   cursor: pointer;
   filter: brightness(95%);
 }
 
-.login-container .sign-in-btn:active {
+.login-container .submit-btn:active {
   cursor: pointer;
   filter: brightness(90%);
 }

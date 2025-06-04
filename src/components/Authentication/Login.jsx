@@ -1,18 +1,22 @@
 import "./Login.css";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { handleLogin } from "../../lib/authLogic";
+import { handleLogin, handleSignup } from "../../lib/authLogic";
 
-const Login = ({ show, setShowLogin, setShowSignup, auth }) => {
+const Login = ({ show, setShowLogin, auth }) => {
+  const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
 
-  const handleSubmit = async () => {
+  const handleSubmitLogin = async () => {
     const result = await handleLogin(email, password);
     if (!result.success) {
-      setShowError(true);
+      setError(result.error);
+      setShowLogin(true);
     } else {
-      setShowError(false);
+      setError(null);
       setShowLogin(false);
       console.log("Login successful", result.data);
       auth.user = result.data.user;
@@ -23,21 +27,47 @@ const Login = ({ show, setShowLogin, setShowSignup, auth }) => {
     }
   };
 
-  const handleSwitch = () => {
-    setShowSignup(true);
-    setShowLogin(false);
+  const handleSubmitSignup = async () => {
+    if (password !== confirmPassword) {
+      console.log("Passwords do not match");
+      return;
+    }
+
+    const result = await handleSignup(email, password);
+    if (!result.success) {
+      setError(result.error);
+    } else {
+      setError(null);
+      handleSwitch();
+      console.log("Signup successful", result.data);
+    }
   };
 
-  const [showError, setShowError] = useState(false);
+  const handleSubmit = () => {
+    if (mode === "login") {
+      handleSubmitLogin();
+    } else {
+      handleSubmitSignup();
+    }
+  };
+
+  const handleSwitch = () => {
+    if (mode === "login") {
+      setMode("signup");
+    } else {
+      setMode("login");
+    }
+  };
 
   return (
     <>
       {show ? (
         <div className="login-center">
           <div className="login-container">
-            <button onClick={handleSwitch} className="switch-to-sign-up">
-              Switch to Sign Up
+            <button onClick={handleSwitch} className="switch">
+              Switch to {mode === "login" ? "Sign Up" : "Login"}
             </button>
+            <h1>{mode === "login" ? "Login" : "Sign Up"}</h1>
             <input
               type="text"
               className="email-input"
@@ -57,14 +87,23 @@ const Login = ({ show, setShowLogin, setShowSignup, auth }) => {
                 }
               }}
             ></input>
-            {showError && (
-              <p className="error-message">
-                We&apos;ve encountered an error logging you in. Please try
-                again.
-              </p>
-            )}
-            <button onClick={handleSubmit} className="sign-in-btn">
-              Sign In
+            {mode === "signup" ? (
+              <input
+                type="password"
+                className="password-input"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSubmit();
+                  }
+                }}
+              ></input>
+            ) : null}
+            {error && <p className="error-message">{error}</p>}
+            <button onClick={handleSubmit} className="submit-btn">
+              {mode === "login" ? "Login" : "Sign Up"}
             </button>
           </div>
         </div>

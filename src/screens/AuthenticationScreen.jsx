@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 
-import Signup from "../components/Authentication/SignUp";
 import Login from "../components/Authentication/Login";
 
 const AuthenticationScreen = ({
@@ -17,11 +16,6 @@ const AuthenticationScreen = ({
         setShowLogin={setShowLogin}
         setShowSignup={setShowSignup}
         auth={auth}
-      />
-      <Signup
-        show={showSignup}
-        setShowLogin={setShowLogin}
-        setShowSignup={setShowSignup}
       />
     </>
   );
