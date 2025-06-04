@@ -5,9 +5,7 @@ import "./App.css";
 
 import Authentication from "./screens/AuthenticationScreen/AuthenticationScreen";
 import LoadingScreen from "./screens/LoadingScreen/LoadingScreen";
-import { use } from "react";
-
-// import Scorecard from "./components/Scorecard/Scorecard";
+import ScorecardScreen from "./screens/ScorecardScreen/ScorecardScreen";
 
 function App() {
   const [auth, setAuth] = useState({ session: null, user: null });
@@ -40,11 +38,7 @@ function App() {
           auth={auth}
         />
       )}
-      {/* <Scorecard
-        numRounds={3}
-        fighterOne={"LANDON MIGAWA"}
-        fighterTwo={"JON JONES"}
-      /> */}
+      {!loading && !showLogin && <ScorecardScreen />}
     </>
   );
 }

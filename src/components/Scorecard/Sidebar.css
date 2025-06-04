@@ -1,0 +1,44 @@
+.scorecard-sidebar {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+  height: 300px;
+  margin-left: 20px;
+}
+
+.scorecard-sidebar .icon {
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+
+.scorecard-sidebar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  width: 175px;
+  height: 50px;
+  border: solid 1px grey;
+
+  margin-bottom: 10px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  transition: all 0.1s;
+}
+
+.scorecard-sidebar button:hover {
+  border: solid 1px rgb(164, 0, 0);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.scorecard-sidebar button:active {
+  color: rgb(164, 0, 0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  /* transform: translateY(1px) scale(0.98); */
+}

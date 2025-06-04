@@ -1,5 +1,4 @@
 import "./Scorecard.css";
-import { useState } from "react";
 import PropTypes from "prop-types";
 
 const parseName = (name) => {
@@ -7,17 +6,17 @@ const parseName = (name) => {
   return [parts[0], parts.slice(1).join(" ")];
 };
 
-const Scorecard = ({ numRounds, fighterOne, fighterTwo }) => {
+const Scorecard = ({
+  numRounds,
+  fighterOne,
+  fighterTwo,
+  scores,
+  setScores,
+  deductions,
+  setDeductions,
+}) => {
   const nameOne = parseName(fighterOne);
   const nameTwo = parseName(fighterTwo);
-
-  const [scores, setScores] = useState(
-    Array.from({ length: numRounds }, () => [0, 0])
-  );
-
-  const [deductions, setDeductions] = useState(
-    Array.from({ length: numRounds }, () => [0, 0])
-  );
 
   const getTotalScores = () => {
     const totals = [0, 0];
