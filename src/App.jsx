@@ -11,6 +11,7 @@ function App() {
   const [auth, setAuth] = useState({ session: null, user: null });
   const [showLogin, setShowLogin] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [matchId, setMatchId] = useState(null);
 
   useEffect(() => {
     async function fetchAuth() {
@@ -38,7 +39,9 @@ function App() {
           auth={auth}
         />
       )}
-      {!loading && !showLogin && <ScorecardScreen />}
+      {!loading && !showLogin && (
+        <ScorecardScreen matchId={matchId} setMatchId={setMatchId} />
+      )}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import "./Sidebar.css";
 
-const Sidebar = ({ numRounds, setScores, setDeductions }) => {
+const Sidebar = ({ numRounds, setScores, setDeductions, handleSave }) => {
   const handleReset = () => {
     const resetScores = Array.from({ length: numRounds }, () => [0, 0]);
     const resetDeductions = Array.from({ length: numRounds }, () => [0, 0]);
@@ -10,7 +10,9 @@ const Sidebar = ({ numRounds, setScores, setDeductions }) => {
 
   return (
     <div className="scorecard-sidebar">
-      <button className="save-btn">SAVE</button>
+      <button onClick={handleSave} className="save-btn">
+        SAVE
+      </button>
       <button className="share-btn">EDIT</button>
       <button onClick={handleReset} className="reset-btn">
         RESET

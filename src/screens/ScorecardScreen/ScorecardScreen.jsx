@@ -3,10 +3,14 @@ import Sidebar from "../../components/Scorecard/Sidebar";
 
 import { useState } from "react";
 
+import { insertMatch, updateMatch } from "../../lib/matchLogic";
+
 import "./ScorecardScreen.css";
 
-const ScorecardScreen = () => {
+const ScorecardScreen = ({ matchId, setMatchId }) => {
   const numRounds = 3;
+  const fighterOne = ["LANDON", "MIGAWA"];
+  const fighterTwo = ["JON", "JONES"];
 
   const [scores, setScores] = useState(
     Array.from({ length: numRounds }, () => [0, 0])
@@ -16,13 +20,44 @@ const ScorecardScreen = () => {
     Array.from({ length: numRounds }, () => [0, 0])
   );
 
+  const parseScores = () => {
+    const parsedScores = [];
+    for (let i = 0; i < numRounds; i++) {
+      parsedScores.push([
+        scores[i][0],
+        scores[i][1],
+        deductions[i][0],
+        deductions[i][1],
+      ]);
+    }
+    return parsedScores;
+  };
+
+  const handleSave = () => {
+    const parsedScores = parseScores();
+
+    if (matchId) {
+      updateMatch(matchId, parsedScores)
+        .then(() => console.log("Match updated successfully"))
+        .catch((error) => console.error("Error updating match:", error));
+    } else
+      insertMatch(fighterOne, fighterTwo, numRounds, parsedScores)
+        .then((newMatchId) => {
+          console.log("Match inserted successfully");
+          setMatchId(newMatchId);
+        })
+        .catch((error) => console.error("Error inserting match:", error));
+    console.log("Scores saved:", parsedScores);
+    console.log("Match Id:", matchId);
+  };
+
   return (
     <div className="scorecard-screen-center">
       <div className="scorecard-screen">
         <Scorecard
           numRounds={numRounds}
-          fighterOne={"LANDON MIGAWA"}
-          fighterTwo={"JON JONES"}
+          fighterOne={fighterOne}
+          fighterTwo={fighterTwo}
           scores={scores}
           setScores={setScores}
           deductions={deductions}
@@ -32,6 +67,7 @@ const ScorecardScreen = () => {
           numRounds={numRounds}
           setScores={setScores}
           setDeductions={setDeductions}
+          handleSave={handleSave}
         />
       </div>
     </div>

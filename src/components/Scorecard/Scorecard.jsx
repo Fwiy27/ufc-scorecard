@@ -1,11 +1,6 @@
 import "./Scorecard.css";
 import PropTypes from "prop-types";
 
-const parseName = (name) => {
-  const parts = name.split(" ");
-  return [parts[0], parts.slice(1).join(" ")];
-};
-
 const Scorecard = ({
   numRounds,
   fighterOne,
@@ -15,9 +10,6 @@ const Scorecard = ({
   deductions,
   setDeductions,
 }) => {
-  const nameOne = parseName(fighterOne);
-  const nameTwo = parseName(fighterTwo);
-
   const getTotalScores = () => {
     const totals = [0, 0];
     for (let i = 0; i < numRounds; i++) {
@@ -49,12 +41,12 @@ const Scorecard = ({
     <div className="scorecard">
       <div className="names-container">
         <div className="ftr-1 name-container left">
-          <p className="fst-nm">{nameOne[0]}</p>
-          <p className="lst-nm">{nameOne[1]}</p>
+          <p className="fst-nm">{fighterOne[0]}</p>
+          <p className="lst-nm">{fighterOne[1]}</p>
         </div>
         <div className="ftr-2 name-container right">
-          <p className="fst-nm">{nameTwo[0]}</p>
-          <p className="lst-nm">{nameTwo[1]}</p>
+          <p className="fst-nm">{fighterTwo[0]}</p>
+          <p className="lst-nm">{fighterTwo[1]}</p>
         </div>
       </div>
 
@@ -109,8 +101,8 @@ const Scorecard = ({
 
 Scorecard.propTypes = {
   numRounds: PropTypes.number,
-  fighterOne: PropTypes.string,
-  fighterTwo: PropTypes.string,
+  fighterOne: PropTypes.array,
+  fighterTwo: PropTypes.array,
 };
 
 export default Scorecard;

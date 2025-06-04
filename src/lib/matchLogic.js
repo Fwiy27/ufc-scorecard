@@ -56,6 +56,7 @@ async function insertMatch(fighterOne, fighterTwo, numRounds, roundScores) {
     if (roundScoresError) throw roundScoresError;
 
     console.log("Data inserted successfully");
+    return matchId; // Return the match ID for further operations
   } catch (error) {
     console.log("Error inserting data:", error);
   }
@@ -107,6 +108,8 @@ async function updateMatch(matchId, roundScores) {
     console.log("Error updating match:", error);
   }
 }
+
+export { insertMatch, removeMatch, updateMatch };
 
 // const fighterOne = ["Landon", "Migawa"];
 // const fighterTwo = ["Jon", "Jones"];
