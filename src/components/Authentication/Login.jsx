@@ -115,7 +115,6 @@ const Login = ({ show, setShowLogin, auth }) => {
 Login.propTypes = {
   show: PropTypes.bool,
   setShowLogin: PropTypes.func,
-  setShowSignup: PropTypes.func,
   auth: PropTypes.object,
 };
 

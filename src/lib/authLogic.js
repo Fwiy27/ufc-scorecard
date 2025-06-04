@@ -42,7 +42,7 @@ async function handleSignup(email, password) {
   }
 }
 
-const loadAuth = async (setAuth) => {
+const loadAuth = async () => {
   const storedAuth = JSON.parse(localStorage.getItem("auth-info"));
 
   if (storedAuth && storedAuth.session && storedAuth.session.refresh_token) {
@@ -53,9 +53,8 @@ const loadAuth = async (setAuth) => {
 
       if (error) {
         console.error("Failed to refresh session:", error.message);
-        setAuth({ session: null, user: null });
         localStorage.removeItem("auth-info");
-        return;
+        return { session: null, user: null };
       }
 
       const updatedAuth = {
@@ -64,15 +63,15 @@ const loadAuth = async (setAuth) => {
       };
 
       localStorage.setItem("auth-info", JSON.stringify(updatedAuth));
-      setAuth(updatedAuth);
       console.log("Session refreshed successfully");
+      return updatedAuth;
     } catch (err) {
       console.error("Unexpected error during session refresh:", err);
-      setAuth({ session: null, user: null });
       localStorage.removeItem("auth-info");
+      return { session: null, user: null };
     }
   } else {
-    setAuth({ session: null, user: null });
+    return { session: null, user: null };
   }
 };
 
