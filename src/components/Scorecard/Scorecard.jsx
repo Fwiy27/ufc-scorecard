@@ -25,7 +25,16 @@ const Scorecard = ({
     let newValue;
     newValue =
       currentValue == 0 ? 10 : currentValue == 7 ? 0 : currentValue - 1;
+
     newScores[roundIndex][fighterIndex] = newValue;
+
+    // When a fighter's score is at 10 we want to check the other fighter's score
+    // If the other fighter's score is also at 0, we set it to 9
+    const otherFighterScore = newScores[roundIndex][fighterIndex === 0 ? 1 : 0];
+    if (newValue === 10 && otherFighterScore === 0) {
+      newScores[roundIndex][fighterIndex === 0 ? 1 : 0] = 9;
+    }
+
     setScores(newScores);
   };
 
