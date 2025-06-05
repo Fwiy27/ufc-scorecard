@@ -66,6 +66,9 @@ const Sidebar = ({
               setNumRounds(parseInt(e.target.value));
             }}
           ></input>
+          <button className={matchId ? "saved" : "unsaved"}>
+            {matchId ? `Saved: Match ID: ${matchId}` : "Match Not Saved"}
+          </button>
         </div>
       </div>
     </>

@@ -55,6 +55,24 @@
   border: solid 1px rgb(164, 0, 0);
 }
 
+.inputs-container button {
+  width: 175px;
+  background: none;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: bold;
+}
+
+.inputs-container button.saved {
+  border: solid 1px green;
+  color: green;
+}
+
+.inputs-container button.unsaved {
+  border: solid 1px red;
+  color: red;
+}
+
 .btn-container button:hover {
   border: solid 1px rgb(164, 0, 0);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
