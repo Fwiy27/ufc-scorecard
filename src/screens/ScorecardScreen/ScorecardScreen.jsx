@@ -1,7 +1,8 @@
 import Scorecard from "../../components/Scorecard/Scorecard";
 import Sidebar from "../../components/Scorecard/Sidebar";
+import Navbar from "../../components/Navbar/Navbar";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { insertMatch } from "../../lib/matchLogic";
 
@@ -15,12 +16,13 @@ const parseName = (name) => {
   return [firstName.toUpperCase(), lastName.toUpperCase()];
 };
 
-const ScorecardScreen = ({ matchId, setMatchId }) => {
+const ScorecardScreen = ({ matchId, setMatchId, handleLogout }) => {
   const [numRounds, setNumRounds] = useState(3);
   const [fighterOne, setFighterOne] = useState(parseName("FIGHTER ONE"));
   const [fighterTwo, setFighterTwo] = useState(parseName("FIGHTER TWO"));
   const [event, setEvent] = useState("");
   const [weightClass, setWeightClass] = useState("");
+  const [previousNumRounds, setPreviousNumRounds] = useState(3);
 
   const [previousScores, setPreviousScores] = useState(
     Array.from({ length: numRounds }, () => [0, 0])
@@ -37,6 +39,7 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
   );
 
   const handleReset = () => {
+    setNumRounds(previousNumRounds);
     setScores(previousScores.map((arr) => [...arr]));
     setDeductions(previousDeductions.map((arr) => [...arr]));
   };
@@ -83,46 +86,44 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
   };
 
   return (
-    <div className="scorecard-screen-center">
-      <div className="scorecard-screen">
-        <Scorecard
-          numRounds={numRounds}
-          fighterOne={fighterOne}
-          fighterTwo={fighterTwo}
-          scores={scores}
-          setScores={setScores}
-          deductions={deductions}
-          setDeductions={setDeductions}
-        />
-        <Sidebar
-          matchId={matchId}
-          numRounds={numRounds}
-          setScores={setScores}
-          setMatchId={setMatchId}
-          setDeductions={setDeductions}
-          handleSave={handleSave}
-          parseName={parseName}
-          event={event}
-          scores={scores}
-          setPreviousScores={setPreviousScores}
-          setPreviousDeductions={setPreviousDeductions}
-          fighterOne={fighterOne}
-          fighterTwo={fighterTwo}
-          handleReset={handleReset}
-          weightClass={weightClass}
-          setFighterOne={(name) => setFighterOne(parseName(name))}
-          setFighterTwo={(name) => setFighterTwo(parseName(name))}
-          setEvent={setEvent}
-          setWeightClass={setWeightClass}
-          setNumRounds={(num) => {
-            const newNumRounds = Math.max(3, Math.min(num, 5));
-            setNumRounds(newNumRounds);
-            setScores(Array.from({ length: newNumRounds }, () => [0, 0]));
-            setDeductions(Array.from({ length: newNumRounds }, () => [0, 0]));
-          }}
-        />
+    <>
+      <Navbar handleLogout={handleLogout} />
+      <div className="scorecard-screen-center">
+        <div className="scorecard-screen">
+          <Scorecard
+            numRounds={numRounds}
+            fighterOne={fighterOne}
+            fighterTwo={fighterTwo}
+            scores={scores}
+            setScores={setScores}
+            deductions={deductions}
+            setDeductions={setDeductions}
+          />
+          <Sidebar
+            matchId={matchId}
+            numRounds={numRounds}
+            setScores={setScores}
+            setMatchId={setMatchId}
+            setDeductions={setDeductions}
+            handleSave={handleSave}
+            parseName={parseName}
+            event={event}
+            scores={scores}
+            setPreviousScores={setPreviousScores}
+            setPreviousDeductions={setPreviousDeductions}
+            fighterOne={fighterOne}
+            fighterTwo={fighterTwo}
+            handleReset={handleReset}
+            weightClass={weightClass}
+            setFighterOne={(name) => setFighterOne(parseName(name))}
+            setFighterTwo={(name) => setFighterTwo(parseName(name))}
+            setEvent={setEvent}
+            setWeightClass={setWeightClass}
+            setNumRounds={setNumRounds}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

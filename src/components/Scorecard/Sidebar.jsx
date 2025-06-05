@@ -26,6 +26,10 @@ const Sidebar = ({
   const handleLoadMatch = async () => {
     const newMatchId = prompt("Load Match ID:");
 
+    if (!newMatchId) {
+      return;
+    }
+
     const matchData = await getMatch(newMatchId);
 
     if (!matchData) {
@@ -55,14 +59,14 @@ const Sidebar = ({
   };
 
   const handleRoundsChange = () => {
-    setScores((prevScores) =>
-      numRounds === 5 ? prevScores.slice(0, 3) : [...prevScores, [0, 0], [0, 0]]
-    );
-    setDeductions((prevDeductions) =>
-      numRounds === 5
-        ? prevDeductions.slice(0, 3)
-        : [...prevDeductions, [0, 0], [0, 0]]
-    );
+    const newNumRounds = numRounds == 5 ? 3 : 5;
+
+    setScores(Array.from({ length: newNumRounds }, () => [0, 0]));
+    setPreviousScores(Array.from({ length: newNumRounds }, () => [0, 0]));
+    setDeductions(Array.from({ length: newNumRounds }, () => [0, 0]));
+    setPreviousDeductions(Array.from({ length: newNumRounds }, () => [0, 0]));
+
+    setNumRounds(newNumRounds);
   };
 
   const [fighterOneInput, setFighterOneInput] = useState("");
@@ -113,8 +117,6 @@ const Sidebar = ({
             className="rounds-btn"
             onClick={() => {
               handleRoundsChange();
-              setNumRounds(numRounds == 5 ? 3 : 5);
-              console.log("Rounds toggled to", numRounds == 5 ? 3 : 5);
             }}
           >{`${numRounds} Rounds`}</button>
           <select

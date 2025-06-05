@@ -24,6 +24,12 @@ function App() {
     fetchAuth();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("auth-info");
+    setAuth(null);
+    window.location.reload();
+  };
+
   return (
     <>
       {loading && <LoadingScreen />}
@@ -35,7 +41,11 @@ function App() {
         />
       )}
       {!loading && !showLogin && (
-        <ScorecardScreen matchId={matchId} setMatchId={setMatchId} />
+        <ScorecardScreen
+          matchId={matchId}
+          setMatchId={setMatchId}
+          handleLogout={handleLogout}
+        />
       )}
     </>
   );
