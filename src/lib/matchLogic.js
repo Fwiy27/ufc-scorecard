@@ -9,13 +9,6 @@ export async function insertMatch(
   roundScores,
   weightClass
 ) {
-  const fighterOneScore = roundScores
-    .map((round) => round[0])
-    .reduce((sum, score) => sum + score, 0);
-  const fighterTwoScore = roundScores
-    .map((round) => round[1])
-    .reduce((sum, score) => sum + score, 0);
-
   const { data } = await supabase.auth.getUser();
   const userId = data?.user?.id;
 
@@ -24,12 +17,11 @@ export async function insertMatch(
       .from("matches")
       .insert({
         user_id: userId, // Assuming you have user authentication
-        fighter_one: fighterOne,
-        fighter_two: fighterTwo,
+        fighter_one: JSON.stringify(fighterOne),
+        fighter_two: JSON.stringify(fighterTwo),
         event: event,
         num_rounds: numRounds,
-        fighter_one_score: fighterOneScore,
-        fighter_two_score: fighterTwoScore,
+        scores: JSON.stringify(roundScores),
         weight_class: weightClass,
       })
       .select()
@@ -39,23 +31,7 @@ export async function insertMatch(
     const matchId = matchData.id;
     console.log("Successfully Inserted Match:", matchId);
 
-    for (let index = 0; index < numRounds; index++) {
-      const roundScore = roundScores[index];
-
-      const { roundError } = await supabase.from("rounds").insert({
-        user_id: userId, // Assuming you have user authentication
-        match_id: matchId,
-        round: index + 1,
-        fighter_one_score: roundScore[0],
-        fighter_two_score: roundScore[1],
-        fighter_one_deductions: roundScore[2],
-        fighter_two_deductions: roundScore[3],
-      });
-
-      if (roundError) throw roundError;
-      console.log("Successfully Inserted Rounds");
-      return matchId;
-    }
+    return matchId;
   } catch (error) {
     console.log("Error while inserting match:", error);
   }
@@ -74,6 +50,16 @@ export async function getMatches() {
     console.error("Error fetching matches", error);
     return [];
   }
+
+  return data;
+}
+
+export async function getMatch(matchId) {
+  const { data, error } = await supabase
+    .from("matches")
+    .select("*")
+    .eq("id", matchId)
+    .single();
 
   return data;
 }

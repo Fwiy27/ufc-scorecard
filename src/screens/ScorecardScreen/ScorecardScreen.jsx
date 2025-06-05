@@ -22,13 +22,24 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
   const [event, setEvent] = useState("");
   const [weightClass, setWeightClass] = useState("");
 
-  const [scores, setScores] = useState(
+  const [previousScores, setPreviousScores] = useState(
+    Array.from({ length: numRounds }, () => [0, 0])
+  );
+  const [previousDeductions, setPreviousDeductions] = useState(
     Array.from({ length: numRounds }, () => [0, 0])
   );
 
+  const [scores, setScores] = useState(
+    Array.from({ length: numRounds }, () => [0, 0])
+  );
   const [deductions, setDeductions] = useState(
     Array.from({ length: numRounds }, () => [0, 0])
   );
+
+  const handleReset = () => {
+    setScores(previousScores.map((arr) => [...arr]));
+    setDeductions(previousDeductions.map((arr) => [...arr]));
+  };
 
   const parseScores = () => {
     const parsedScores = [];
@@ -87,11 +98,18 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
           matchId={matchId}
           numRounds={numRounds}
           setScores={setScores}
+          setMatchId={setMatchId}
           setDeductions={setDeductions}
           handleSave={handleSave}
           parseName={parseName}
+          event={event}
+          scores={scores}
+          setPreviousScores={setPreviousScores}
+          setPreviousDeductions={setPreviousDeductions}
           fighterOne={fighterOne}
           fighterTwo={fighterTwo}
+          handleReset={handleReset}
+          weightClass={weightClass}
           setFighterOne={(name) => setFighterOne(parseName(name))}
           setFighterTwo={(name) => setFighterTwo(parseName(name))}
           setEvent={setEvent}
