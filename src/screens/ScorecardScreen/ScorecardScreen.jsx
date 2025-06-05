@@ -7,10 +7,18 @@ import { insertMatch, updateMatch } from "../../lib/matchLogic";
 
 import "./ScorecardScreen.css";
 
+const parseName = (name) => {
+  const parts = name.split(" ");
+  if (parts.length < 2) return [name.toUpperCase(), ""];
+  const firstName = parts[0];
+  const lastName = parts.slice(1).join(" ");
+  return [firstName.toUpperCase(), lastName.toUpperCase()];
+};
+
 const ScorecardScreen = ({ matchId, setMatchId }) => {
-  const numRounds = 3;
-  const fighterOne = ["JACK", "DELLA MADALLENA"];
-  const fighterTwo = ["JON", "JONES"];
+  const [numRounds, setNumRounds] = useState(3);
+  const [fighterOne, setFighterOne] = useState(parseName("FIGHTER ONE"));
+  const [fighterTwo, setFighterTwo] = useState(parseName("FIGHTER TWO"));
 
   const [scores, setScores] = useState(
     Array.from({ length: numRounds }, () => [0, 0])
@@ -69,6 +77,17 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
           setScores={setScores}
           setDeductions={setDeductions}
           handleSave={handleSave}
+          parseName={parseName}
+          fighterOne={fighterOne}
+          fighterTwo={fighterTwo}
+          setFighterOne={(name) => setFighterOne(parseName(name))}
+          setFighterTwo={(name) => setFighterTwo(parseName(name))}
+          setNumRounds={(num) => {
+            const newNumRounds = Math.max(3, Math.min(num, 5));
+            setNumRounds(newNumRounds);
+            setScores(Array.from({ length: newNumRounds }, () => [0, 0]));
+            setDeductions(Array.from({ length: newNumRounds }, () => [0, 0]));
+          }}
         />
       </div>
     </div>
