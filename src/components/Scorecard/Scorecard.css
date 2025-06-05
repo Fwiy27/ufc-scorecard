@@ -153,7 +153,7 @@
   font-size: 1.5em;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 894px) {
   .scorecard {
     width: 75vw;
     min-width: 375px;

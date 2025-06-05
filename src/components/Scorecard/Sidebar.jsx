@@ -2,13 +2,11 @@ import "./Sidebar.css";
 
 const Sidebar = ({
   matchId,
+  setMatchId,
   numRounds,
   setScores,
   setDeductions,
   handleSave,
-  parseName,
-  fighterOne,
-  fighterTwo,
   setFighterOne,
   setFighterTwo,
   setNumRounds,
@@ -45,27 +43,29 @@ const Sidebar = ({
             onChange={(e) => setFighterTwo(e.target.value)}
           ></input>
           <input
-            type="number"
-            placeholder="Number of Rounds"
+            type="event"
+            placeholder="Event"
             className="search-input"
-            min={3}
-            max={5}
-            step={2}
-            defaultValue={3}
-            onChange={(e) => {
-              if (e.target.value === "") {
-                setNumRounds(3);
-                return;
-              }
-              if (isNaN(e.target.value)) {
-                return;
-              }
-              if (!["3", "5"].includes(e.target.value)) {
-                return;
-              }
-              setNumRounds(parseInt(e.target.value));
-            }}
           ></input>
+          <button
+            className="rounds-btn"
+            onClick={() => {
+              setNumRounds(numRounds == 5 ? 3 : 5);
+              console.log("Rounds toggled to", numRounds == 5 ? 3 : 5);
+            }}
+          >{`${numRounds} Rounds`}</button>
+          <select id="weight-class-select">
+            <option value="">WEIGHT CLASS</option>
+            <option value="strawweight">STRAWWEIGHT</option>
+            <option value="FLYWEIGHT">FLYWEIGHT</option>
+            <option value="bantamweight">BANTAMWEIGHT</option>
+            <option value="featherweight">FEATHERWEIGHT</option>
+            <option value="lightweight">LIGHTWEIGHT</option>
+            <option value="welterweight">WELTERWEIGHT</option>
+            <option value="middleweight">MIDDLEWEIGHT</option>
+            <option value="light-heavyweight">LIGHT HEAVYWEIGHT</option>
+            <option value="heavyweight">HEAVYWEIGHT</option>
+          </select>
           <button className={matchId ? "saved" : "unsaved"}>
             {matchId ? `Saved: Match ID: ${matchId}` : "Match Not Saved"}
           </button>
