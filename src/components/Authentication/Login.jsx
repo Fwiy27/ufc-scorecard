@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { handleLogin, handleSignup } from "../../lib/authLogic";
 
-const Login = ({ show, setShowLogin, auth }) => {
+const Login = ({ show, setShowLogin, setAuth }) => {
   const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,11 +19,10 @@ const Login = ({ show, setShowLogin, auth }) => {
       setError(null);
       setShowLogin(false);
       console.log("Login successful", result.data);
-      auth.user = result.data.user;
-      auth.session = result.data.session;
+      setAuth(result.data);
 
-      localStorage.setItem("auth-info", JSON.stringify(auth));
-      console.log("Saved auth to local storage:", JSON.stringify(auth));
+      localStorage.setItem("auth-info", JSON.stringify(result.data));
+      console.log("Saved auth to local storage:", JSON.stringify(result.data));
     }
   };
 

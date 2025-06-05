@@ -10,6 +10,8 @@ const Sidebar = ({
   setFighterOne,
   setFighterTwo,
   setNumRounds,
+  setEvent,
+  setWeightClass,
 }) => {
   const handleReset = () => {
     const resetScores = Array.from({ length: numRounds }, () => [0, 0]);
@@ -46,6 +48,9 @@ const Sidebar = ({
             type="event"
             placeholder="Event"
             className="search-input"
+            onChange={(e) => {
+              setEvent(e.target.value);
+            }}
           ></input>
           <button
             className="rounds-btn"
@@ -54,7 +59,12 @@ const Sidebar = ({
               console.log("Rounds toggled to", numRounds == 5 ? 3 : 5);
             }}
           >{`${numRounds} Rounds`}</button>
-          <select id="weight-class-select">
+          <select
+            id="weight-class-select"
+            onChange={(e) => {
+              setWeightClass(e.target.value);
+            }}
+          >
             <option value="">WEIGHT CLASS</option>
             <option value="strawweight">STRAWWEIGHT</option>
             <option value="FLYWEIGHT">FLYWEIGHT</option>

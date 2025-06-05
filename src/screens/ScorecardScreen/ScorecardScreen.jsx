@@ -3,7 +3,7 @@ import Sidebar from "../../components/Scorecard/Sidebar";
 
 import { useEffect, useState } from "react";
 
-import { insertMatch, updateMatch } from "../../lib/matchLogic";
+import { insertMatch } from "../../lib/matchLogic";
 
 import "./ScorecardScreen.css";
 
@@ -19,6 +19,8 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
   const [numRounds, setNumRounds] = useState(3);
   const [fighterOne, setFighterOne] = useState(parseName("FIGHTER ONE"));
   const [fighterTwo, setFighterTwo] = useState(parseName("FIGHTER TWO"));
+  const [event, setEvent] = useState("");
+  const [weightClass, setWeightClass] = useState("");
 
   const [scores, setScores] = useState(
     Array.from({ length: numRounds }, () => [0, 0])
@@ -43,20 +45,30 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
 
   const handleSave = () => {
     const parsedScores = parseScores();
-
+    console.log({
+      fighterOne: fighterOne,
+      fighterTwo: fighterTwo,
+      event: event,
+      numRounds: numRounds,
+      roundScores: parsedScores,
+      weightClass: weightClass,
+    });
     if (matchId) {
-      updateMatch(matchId, parsedScores)
-        .then(() => console.log("Match updated successfully"))
-        .catch((error) => console.error("Error updating match:", error));
+      // UPDATE MATCH INSTEAD OF CREATE NEW
+      console.log("implement update logic");
     } else
-      insertMatch(fighterOne, fighterTwo, numRounds, parsedScores)
+      insertMatch(
+        fighterOne,
+        fighterTwo,
+        event,
+        numRounds,
+        parsedScores,
+        weightClass
+      )
         .then((newMatchId) => {
-          console.log("Match inserted successfully");
           setMatchId(newMatchId);
         })
         .catch((error) => console.error("Error inserting match:", error));
-    console.log("Scores saved:", parsedScores);
-    console.log("Match Id:", matchId);
   };
 
   return (
@@ -82,6 +94,8 @@ const ScorecardScreen = ({ matchId, setMatchId }) => {
           fighterTwo={fighterTwo}
           setFighterOne={(name) => setFighterOne(parseName(name))}
           setFighterTwo={(name) => setFighterTwo(parseName(name))}
+          setEvent={setEvent}
+          setWeightClass={setWeightClass}
           setNumRounds={(num) => {
             const newNumRounds = Math.max(3, Math.min(num, 5));
             setNumRounds(newNumRounds);

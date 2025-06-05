@@ -1,138 +1,83 @@
 import { supabase } from "./supabaseClient.js";
 
-async function insertMatch(fighterOne, fighterTwo, numRounds, roundScores) {
+// Insert new match to matches and rounds
+export async function insertMatch(
+  fighterOne,
+  fighterTwo,
+  event,
+  numRounds,
+  roundScores,
+  weightClass
+) {
+  const fighterOneScore = roundScores
+    .map((round) => round[0])
+    .reduce((sum, score) => sum + score, 0);
+  const fighterTwoScore = roundScores
+    .map((round) => round[1])
+    .reduce((sum, score) => sum + score, 0);
+
+  const { data } = await supabase.auth.getUser();
+  const userId = data?.user?.id;
+
   try {
-    // Insert Fighters
-    const { data: fighterOneData, error: fighterOneError } = await supabase
-      .from("fighters")
-      .upsert({ first_name: fighterOne[0], last_name: fighterOne[1] })
-      .select("id")
-      .single();
-
-    if (fighterOneError) throw fighterOneError;
-
-    const { data: fighterTwoData, error: fighterTwoError } = await supabase
-      .from("fighters")
-      .upsert({ first_name: fighterTwo[0], last_name: fighterTwo[1] })
-      .select("id")
-      .single();
-
-    if (fighterTwoError) throw fighterTwoError;
-
-    const fighterOneId = fighterOneData.id;
-    const fighterTwoId = fighterTwoData.id;
-
-    // Insert Match
     const { data: matchData, error: matchError } = await supabase
       .from("matches")
       .insert({
-        fighter_one_id: fighterOneId,
-        fighter_two_id: fighterTwoId,
+        user_id: userId, // Assuming you have user authentication
+        fighter_one: fighterOne,
+        fighter_two: fighterTwo,
+        event: event,
         num_rounds: numRounds,
+        fighter_one_score: fighterOneScore,
+        fighter_two_score: fighterTwoScore,
+        weight_class: weightClass,
       })
-      .select("id")
+      .select()
       .single();
 
     if (matchError) throw matchError;
-
     const matchId = matchData.id;
+    console.log("Successfully Inserted Match:", matchId);
 
-    // Insert round scores
-    const roundScoresData = roundScores.map((round, index) => ({
-      match_id: matchId,
-      round_number: index + 1,
-      fighter_one_id: fighterOneId,
-      fighter_two_id: fighterTwoId,
-      fighter_one_score: round[0],
-      fighter_two_score: round[1],
-      fighter_one_deductions: round[2],
-      fighter_two_deductions: round[3],
-    }));
+    for (let index = 0; index < numRounds; index++) {
+      const roundScore = roundScores[index];
 
-    const { error: roundScoresError } = await supabase
-      .from("round_scores")
-      .insert(roundScoresData);
+      const { roundError } = await supabase.from("rounds").insert({
+        user_id: userId, // Assuming you have user authentication
+        match_id: matchId,
+        round: index + 1,
+        fighter_one_score: roundScore[0],
+        fighter_two_score: roundScore[1],
+        fighter_one_deductions: roundScore[2],
+        fighter_two_deductions: roundScore[3],
+      });
 
-    if (roundScoresError) throw roundScoresError;
-
-    console.log("Data inserted successfully");
-    return matchId; // Return the match ID for further operations
-  } catch (error) {
-    console.log("Error inserting data:", error);
-  }
-}
-
-async function removeMatch(matchId) {
-  try {
-    // Remove Rounds
-    const { error: roundError } = await supabase
-      .from("round_scores")
-      .delete()
-      .eq("match_id", matchId);
-
-    if (roundError) throw roundError;
-
-    // Remove Match
-    const { error: matchError } = await supabase
-      .from("matches")
-      .delete()
-      .eq("id", matchId);
-
-    if (matchError) throw matchError;
-    console.log("Succesfully removed match");
-  } catch (error) {
-    console.log("Error deleting data:", error);
-  }
-}
-
-async function updateMatch(matchId, roundScores) {
-  try {
-    for (let i = 0; i < roundScores.length; i++) {
-      const round = roundScores[i];
-      const { roundError } = await supabase
-        .from("round_scores")
-        .update({
-          fighter_one_score: round[0],
-          fighter_two_score: round[1],
-          fighter_one_deductions: round[2],
-          fighter_two_deductions: round[3],
-          updated_at: new Date().toISOString(),
-        })
-        .eq("match_id", matchId)
-        .eq("round_number", i + 1);
-      if (roundError) throw error;
-
-      const { matchError } = await supabase
-        .from("matches")
-        .update({ updated_at: new Date().toISOString() })
-        .eq("id", matchId);
-      if (matchError) throw error;
+      if (roundError) throw roundError;
+      console.log("Successfully Inserted Rounds");
+      return matchId;
     }
-    console.log("Match updated successfully");
   } catch (error) {
-    console.log("Error updating match:", error);
+    console.log("Error while inserting match:", error);
   }
 }
 
-export { insertMatch, removeMatch, updateMatch };
+export async function getMatches() {
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData?.user?.id;
 
-// const fighterOne = ["Landon", "Migawa"];
-// const fighterTwo = ["Jon", "Jones"];
-// const numRounds = 3;
-// const roundScores = [
-//   [10, 9, 0, 0],
-//   [9, 10, 0, 0],
-//   [10, 9, 0, 1],
-// ];
+  const { data, error } = await supabase
+    .from("matches")
+    .select("*")
+    .eq("user_id", userId); // user_id should be a string
 
-// insertMatch(fighterOne, fighterTwo, numRounds, roundScores);
+  if (error) {
+    console.error("Error fetching matches", error);
+    return [];
+  }
 
-// const newScores = [
-//   [10, 9, 0, 0],
-//   [10, 9, 0, 0],
-//   [10, 9, 0, 0],
-// ];
+  return data;
+}
 
-// updateMatch(3, newScores);
+// Delete match from match and rounds
 
-// removeMatch(2);
+// Update match rounds with matchId

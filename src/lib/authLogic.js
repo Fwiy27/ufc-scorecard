@@ -43,35 +43,37 @@ async function handleSignup(email, password) {
 }
 
 const loadAuth = async () => {
-  const storedAuth = JSON.parse(localStorage.getItem("auth-info"));
-
-  if (storedAuth && storedAuth.session && storedAuth.session.refresh_token) {
+  // Check localStorage for previous auth
+  const stored = localStorage.getItem("auth-info");
+  if (!stored) {
+    console.log("No Previous Auth");
+    return null;
+  } else {
     try {
+      const parsed = JSON.parse(stored);
+      const refreshToken = parsed.session?.refresh_token;
+      if (!refreshToken) {
+        console.log("No refresh token found");
+        return null;
+      }
+
       const { data, error } = await supabase.auth.refreshSession({
-        refresh_token: storedAuth.session.refresh_token,
+        refresh_token: refreshToken,
       });
 
       if (error) {
-        console.error("Failed to refresh session:", error.message);
+        console.log("Error refreshing token:", error);
         localStorage.removeItem("auth-info");
-        return { session: null, user: null };
+        return null;
       }
 
-      const updatedAuth = {
-        session: data.session,
-        user: data.user,
-      };
+      localStorage.setItem("auth-info", JSON.stringify(data));
+      console.log("Successfully Refreshed Token");
 
-      localStorage.setItem("auth-info", JSON.stringify(updatedAuth));
-      console.log("Session refreshed successfully");
-      return updatedAuth;
+      return data;
     } catch (err) {
-      console.error("Unexpected error during session refresh:", err);
-      localStorage.removeItem("auth-info");
-      return { session: null, user: null };
+      console.log("Unexpected error refreshing token:", err);
     }
-  } else {
-    return { session: null, user: null };
   }
 };
 

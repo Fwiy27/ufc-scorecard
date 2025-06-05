@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { loadAuth } from "./lib/authLogic";
+import { getMatches } from "./lib/matchLogic";
 
 import "./App.css";
 
@@ -8,25 +9,19 @@ import LoadingScreen from "./screens/LoadingScreen/LoadingScreen";
 import ScorecardScreen from "./screens/ScorecardScreen/ScorecardScreen";
 
 function App() {
-  const [auth, setAuth] = useState({ session: null, user: null });
+  const [auth, setAuth] = useState(null);
   const [showLogin, setShowLogin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [matchId, setMatchId] = useState(null);
 
   useEffect(() => {
-    async function fetchAuth() {
-      const maybeAuth = await loadAuth(setAuth);
-      if (maybeAuth) {
-        setAuth(maybeAuth);
-        setShowLogin(maybeAuth.session ? false : true);
-      } else {
-        // fallback: if loadAuth only sets via setAuth
-        setShowLogin((prev) => (auth.session ? false : true));
-      }
+    const fetchAuth = async () => {
+      const newAuth = await loadAuth();
+      setAuth(newAuth);
       setLoading(false);
-    }
+      setShowLogin(!newAuth);
+    };
     fetchAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -36,7 +31,7 @@ function App() {
         <Authentication
           showLogin={showLogin}
           setShowLogin={setShowLogin}
-          auth={auth}
+          setAuth={(a) => setAuth(a)}
         />
       )}
       {!loading && !showLogin && (
