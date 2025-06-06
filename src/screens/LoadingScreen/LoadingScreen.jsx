@@ -1,4 +1,4 @@
-import Spinner from "../../components/LoadingSpinner/Spinner";
+import Spinner from "../../components/Loading/Spinner";
 
 import "./LoadingScreen.css";
 

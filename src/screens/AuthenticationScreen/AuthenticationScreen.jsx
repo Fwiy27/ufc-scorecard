@@ -2,17 +2,16 @@ import PropTypes from "prop-types";
 
 import Login from "../../components/Authentication/Login";
 
-const AuthenticationScreen = ({ showLogin, setShowLogin, setAuth }) => {
+const AuthenticationScreen = ({ setScreen, setAuth }) => {
   return (
     <>
-      <Login show={showLogin} setShowLogin={setShowLogin} setAuth={setAuth} />
+      <Login setScreen={setScreen} setAuth={setAuth} />
     </>
   );
 };
 
 AuthenticationScreen.propTypes = {
-  showLogin: PropTypes.bool,
-  setShowLogin: PropTypes.func,
+  setScreen: PropTypes.func,
   setAuth: PropTypes.func,
 };
 

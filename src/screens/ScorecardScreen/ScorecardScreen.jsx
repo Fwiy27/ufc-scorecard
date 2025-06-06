@@ -87,7 +87,6 @@ const ScorecardScreen = ({ matchId, setMatchId, handleLogout }) => {
 
   return (
     <>
-      <Navbar handleLogout={handleLogout} />
       <div className="scorecard-screen-center">
         <div className="scorecard-screen">
           <Scorecard
