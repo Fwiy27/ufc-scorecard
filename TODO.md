@@ -1,5 +1,5 @@
 # TODO
-- Create view history screen
+- Move load match login to scoreboardScreen
 - Implement New Scorecard Button on Navbar
 - Verify data before saving (if data is incomplete mark as draft)
 - Create Dashboard
