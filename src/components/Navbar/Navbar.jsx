@@ -1,6 +1,6 @@
 import "./Navbar.css";
 
-const Navbar = ({ handleLogout, setScreen }) => {
+const Navbar = ({ handleLogout, setScreen, setMatchId }) => {
   return (
     <div className="navbar">
       <div className="left">
@@ -14,6 +14,7 @@ const Navbar = ({ handleLogout, setScreen }) => {
         </button>
         <button
           onClick={() => {
+            setMatchId(null);
             setScreen("history");
           }}
         >

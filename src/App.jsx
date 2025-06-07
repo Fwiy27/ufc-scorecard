@@ -56,7 +56,11 @@ function App() {
   return (
     <>
       {screen != "loading" && screen != "login" && (
-        <Navbar handleLogout={handleLogout} setScreen={setScreen} />
+        <Navbar
+          handleLogout={handleLogout}
+          setScreen={setScreen}
+          setMatchId={setMatchId}
+        />
       )}
       {(screen == "loading" || showLoading) && <LoadingScreen />}
       {screen == "login" && (

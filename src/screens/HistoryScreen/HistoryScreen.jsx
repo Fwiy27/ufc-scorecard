@@ -1,6 +1,6 @@
 import "./HistoryScreen.css";
 
-import { getMatches } from "../../lib/matchLogic";
+import { getMatches, deleteMatch } from "../../lib/matchLogic";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -43,6 +43,14 @@ const HistoryScreen = ({ auth, setMatchId, setScreen, setShowLoading }) => {
               scoresArray.reduce((acc, score) => acc + score[0], 0),
               scoresArray.reduce((acc, score) => acc + score[1], 0),
             ];
+            const weightClass = record.weight_class
+              .split("-")
+              .map(
+                (word) =>
+                  word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              )
+              .join(" ");
+
             return (
               <tr
                 key={`match-id-${record.id}`}
@@ -62,10 +70,7 @@ const HistoryScreen = ({ auth, setMatchId, setScreen, setShowLoading }) => {
                     record.updated_at || record.created_at
                   ).toLocaleString()}
                 </td>
-                <td>
-                  {record.weight_class.charAt(0).toUpperCase() +
-                    record.weight_class.slice(1)}
-                </td>
+                <td>{weightClass}</td>
                 <td>{record.event}</td>
                 <td>
                   <button
@@ -76,7 +81,19 @@ const HistoryScreen = ({ auth, setMatchId, setScreen, setShowLoading }) => {
                   >
                     OPEN
                   </button>
-                  <button className="delete-btn">DELETE</button>
+                  <button
+                    onClick={() => {
+                      if (deleteMatch(record.id)) {
+                        const newMatches = matches.filter(
+                          (m) => m.id !== record.id
+                        );
+                        setMatches(newMatches);
+                      }
+                    }}
+                    className="delete-btn"
+                  >
+                    DELETE
+                  </button>
                 </td>
               </tr>
             );

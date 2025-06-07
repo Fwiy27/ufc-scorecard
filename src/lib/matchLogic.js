@@ -64,6 +64,17 @@ export async function getMatch(matchId) {
   return data;
 }
 
-// Delete match from match and rounds
+// Delete match with matchId
+export async function deleteMatch(matchId) {
+  try {
+    const { error } = await supabase.from("matches").delete().eq("id", matchId);
+    if (error) throw error;
+    console.log("Successfully deleted match: ", matchId);
+    return true;
+  } catch (error) {
+    console.log("Error deleting match", error);
+    return false;
+  }
+}
 
 // Update match rounds with matchId
