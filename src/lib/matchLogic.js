@@ -44,7 +44,8 @@ export async function getMatches() {
   const { data, error } = await supabase
     .from("matches")
     .select("*")
-    .eq("user_id", userId); // user_id should be a string
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false }); // Sort by updated_at descending
 
   if (error) {
     console.error("Error fetching matches", error);
