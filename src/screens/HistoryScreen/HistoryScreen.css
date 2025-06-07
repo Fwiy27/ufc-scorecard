@@ -59,3 +59,71 @@ td {
 .record {
   width: 100%;
 }
+
+@media (max-width: 894px) {
+  .history-screen {
+    margin-top: 80px;
+    padding: 0 5px;
+  }
+
+  table.record-container,
+  thead,
+  tbody,
+  tr,
+  th,
+  td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  table.record-container {
+    border: none;
+    margin: 0;
+    font-size: 15px;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 10px 0;
+  }
+
+  td {
+    text-align: left;
+    padding: 8px 12px;
+    border: none;
+    position: relative;
+    min-height: 36px;
+  }
+
+  td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 2px;
+    color: #444;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .delete-btn,
+  .open-btn {
+    width: 100%;
+    margin: 8px 0 0 0;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .fighters p {
+    margin: 2px 0;
+  }
+}
